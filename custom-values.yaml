@@ -1,0 +1,62 @@
+# custom-values.yml
+
+adminPasswordBcrypt: password
+adminEmail: user@agriaf.com.br
+adminFirstName: Admin
+adminLastName: Agriaf
+
+am:
+  name: am
+
+mongo:
+  uri: mongodb://user:passwd@gravitee-mongodb-0.gravitee-mongodb-svc.default.svc.cluster.local:27017,gravitee-mongodb-1.gravitee-mongodb-svc.default.svc.cluster.local:27017/gravitee-am?ssl=false
+
+mongodb-replicaset:
+  enabled: false
+
+api:
+  jwt:
+    secret: secret
+  ingress:
+    enabled: true
+    path: /management
+    # Used to create an Ingress record.
+    hosts:
+      - am.agriaf.com.br
+    tls:
+      - hosts:
+          - am.agriaf.com.br
+        secretName: am-api-custom-cert
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+
+gateway:
+  jwt:
+    secret: secret
+  ingress:
+    enabled: true
+    path: /auth
+    # Used to create an Ingress record.
+    hosts:
+      - am.agriaf.com.br
+    tls:
+      - hosts:
+          - am.agriaf.com.br
+        secretName: am-gateway-custom-cert
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+
+ui:
+  ingress:
+    enabled: true
+    path: /
+    # Used to create an Ingress record.
+    hosts:
+      - am.agriaf.com.br
+    tls:
+      - hosts:
+          - am.agriaf.com.br
+        secretName: am-ui-custom-cert
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/rewrite-target: /
